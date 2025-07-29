@@ -29,13 +29,6 @@ Parameters:
 
 Resources:
 
-  # CloudFront Origin Access Identity
-  CloudFrontOAI:
-    Type: AWS::CloudFront::OriginAccessIdentity
-    Properties:
-      OriginAccessIdentityConfig:
-        Comment: !Sub 'OAI for DeltaPag Terms ${Environment}'
-
   # CloudFront Distribution
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -47,9 +40,11 @@ Resources:
         DefaultRootObject: index.html
         Origins:
           - Id: S3Origin
-            DomainName: !Sub '${S3BucketName}.s3.${S3Region}.amazonaws.com'
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOAI}'
+            DomainName: !Sub '${S3BucketName}.s3-website.${S3Region}.amazonaws.com'
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https

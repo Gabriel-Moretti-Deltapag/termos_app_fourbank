@@ -82,12 +82,13 @@ The CloudFormation template creates:
 
 ### Core Infrastructure
 
-- **S3 Bucket**: Static storage in `sa-east-1` region (Brazilian compliance)
+- **S3 Bucket**: Public website hosting in `sa-east-1` region (Brazilian compliance)
 - **CloudFront Distribution**: Global CDN with HTTPS (deployed from `us-east-1`)
 
 ### Security & Monitoring
 
-- **Basic Security**: CloudFront default protections
+- **Public S3 Bucket**: Simplified setup, direct access allowed
+- **HTTPS via CloudFront**: Secure delivery globally
 - **Cost Optimized**: Minimal AWS services for maximum savings
 
 ### Performance Optimization
@@ -117,6 +118,8 @@ Set these in your repository's Variables section:
 - `ENVIRONMENT`: Environment identifier (optional)
 
 **Note**: CloudFront resources deployed to `us-east-1` (required), S3 bucket created in `sa-east-1` (company compliance).
+
+**Security Note**: This setup uses a public S3 bucket for simplicity. Users can access files directly via S3 URLs, bypassing CloudFront. For higher security, consider using Origin Access Identity (OAI).
 
 ## 📝 Content Management
 
@@ -188,8 +191,8 @@ Follow the existing HTML structure and CSS classes:
 ### Access Control
 
 - Public read-only access to website content
-- CloudFront Origin Access Identity protection
-- S3 bucket policy restrictions
+- S3 bucket configured for public website hosting
+- CloudFront provides additional global access layer
 
 ## 📊 Monitoring & Alerting
 
@@ -270,6 +273,8 @@ aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --path
 - **Total: ~$0.10/month** 🎉
 
 *Most small to medium websites will operate entirely within AWS Free Tier limits, making this virtually free!*
+
+**Important**: Users can access files directly from S3, potentially bypassing CloudFront free tier. Monitor usage to ensure you stay within free tier limits.
 
 ### AWS Free Tier Benefits
 
