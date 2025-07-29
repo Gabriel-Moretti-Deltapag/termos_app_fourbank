@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso - DeltaPag Soluções de Pagamento</title>
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <meta name="msapplication-config" content="assets/browserconfig.xml">
+    <meta name="theme-color" content="#ff6b35">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(45deg, #f8f9fa 0%, #e9ecef 50%, #fff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.1), 0 4px 25px rgba(0,0,0,0.1);
+            border-radius: 0 0 12px 12px;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 25%, #d35400 50%, #ff6b35 75%, #ff8500 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-logo {
+            max-height: 80px;
+            width: auto;
+            margin-bottom: 1rem;
+            filter: brightness(1.1) contrast(1.1);
+            transition: transform 0.3s ease, filter 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2) contrast(1.2);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .intro {
+            background: #fff3e0;
+            border-left: 4px solid #ff6b35;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .intro p {
+            margin-bottom: 1rem;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: #000;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ff6b35;
+            display: inline-block;
+        }
+
+        .subsection {
+            margin-bottom: 1.5rem;
+        }
+
+        .subsection h3 {
+            color: #000;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .definition {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #ff6b35;
+        }
+
+        .definition strong {
+            color: #ff6b35;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        ol, ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .important {
+            background: #fff3e0;
+            border: 1px solid #ff8500;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning {
+            background: #2c2c2c;
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: white;
+        }
+
+        .highlight {
+            background: #ffebe0;
+            border: 1px solid #ff6b35;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .contact-info {
+            background: #ecf0f1;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .contact-info strong {
+            color: #000;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h3 {
+            color: #000;
+            margin-bottom: 1rem;
+        }
+
+        .toc ol {
+            margin-left: 1rem;
+        }
+
+        .toc a {
+            color: #ff6b35;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+                @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                box-shadow: 0 5px 20px rgba(255, 107, 53, 0.1), 0 2px 15px rgba(0,0,0,0.1);
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 1.5rem;
+            }
+
+            .header-logo {
+                max-height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="assets/logopng.png" alt="DeltaPag Logo" class="header-logo">
+            <h1>TERMOS DE USO</h1>
+            <p>POLÍTICA DE PRIVACIDADE E SERVIÇOS</p>
+        </header>
+
+        <div class="content">
+            <div class="intro">
+                <p><strong>Olá! Que bom contar com seu interesse!</strong> Antes de usar nossos serviços, tire um tempo para ler nossos Termos de Uso e Serviço e conhecer as regras que regem nossa relação com você.</p>
+                
+                <p>Abaixo esclareceremos alguns pontos que julgamos importantes. Caso persista alguma dúvida acerca de quaisquer pontos discutidos ou não neste documento, por favor, não hesite em contatar-nos pelo endereço:</p>
+                
+                <div class="contact-info">
+                    <strong>Endereço para Contato:</strong>
+                    Rua Dr. Luiz Pizza 357 – Primeiro Andar – CEP 13960-000<br>
+                    Centro, Socorro/SP
+                </div>
+            </div>
+
+            <div class="toc">
+                <h3>Índice</h3>
+                <ol>
+                    <li><a href="#definicoes">Das Definições</a></li>
+                    <li><a href="#adesao">Da Adesão</a></li>
+                    <li><a href="#quem-somos">Quem Somos e O Que Fazemos</a></li>
+                    <li><a href="#condicoes-gerais">Das Condições Gerais de Uso</a></li>
+                    <li><a href="#protecao-dados">Da Proteção de Dados e Privacidade</a></li>
+                    <li><a href="#propriedade-intelectual">Da Propriedade Intelectual</a></li>
+                    <li><a href="#isencao-responsabilidade">Das Hipóteses de Isenção de Responsabilidade</a></li>
+                    <li><a href="#sancoes">Das Sanções</a></li>
+                    <li><a href="#disposicoes-gerais">Das Disposições Gerais</a></li>
+                </ol>
+            </div>
+
+            <section id="definicoes" class="section">
+                <h2 class="section-title">1. DAS DEFINIÇÕES</h2>
+                <p>No presente instrumento, entendemos as expressões abaixo de acordo com as seguintes definições:</p>
+                
+                <div class="definition">
+                    <strong>QUALIFICAÇÃO CLIENTE DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA</strong>
+                    Sociedade empresária limitada, com sede na Rua Dr. Luiz Pizza 357 – Primeiro Andar – CEP 13960-000, Centro, Socorro/SP, inscrita no CNPJ sob nº. 07.905.082/0001-62.
+                </div>
+
+                <div class="definition">
+                    <strong>INSTITUIÇÃO DE PAGAMENTO</strong>
+                    PAGME SERVICOS DE PAGAMENTOS LTDA., sociedade empresária limitada, com sede na Avenida Carlos Gomes, nº 328, sala 902, bairro Auxiliadora, CEP 90.480-001, Porto Alegre/RS, inscrita no CNPJ/MF sob o nº 34.471.744/0001-06.
+                </div>
+
+                <div class="definition">
+                    <strong>CLIENTE</strong>
+                    A pessoa física ou jurídica titular da Conta de Pagamento.
+                </div>
+
+                <div class="definition">
+                    <strong>PARCERIA</strong>
+                    A Conta de Pagamento e os demais serviços são oferecidos aos CLIENTES por meio de uma parceria firmada entre a DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA e a INSTITUIÇÃO DE PAGAMENTO.
+                </div>
+
+                <div class="definition">
+                    <strong>BANCO LIQUIDANTE</strong>
+                    Instituição que será responsável em fazer as liquidações das transações.
+                </div>
+
+                <div class="definition">
+                    <strong>CONTA DE PAGAMENTO</strong>
+                    É conta de pagamento do tipo pré-paga de titularidade do CLIENTE e gerida por INSTITUIÇÃO DE PAGAMENTO, consistindo em conta escritural individualizada, associada ao CPF ou CNPJ do CLIENTE, destinada ao registro de valores em moeda corrente nacional previamente aportados pelo CLIENTE, ou terceiros, por meio de Carga ou Recarga.
+                </div>
+
+                <div class="definition">
+                    <strong>CARGA OU RECARGA</strong>
+                    Aporte de valores em moeda corrente nacional na Conta de Pagamento, mediante depósito via boleto ou transferência.
+                </div>
+
+                <div class="definition">
+                    <strong>PLATAFORMA</strong>
+                    Aplicativo mobile compatível com sistemas iOS e Android, disponível nas lojas App Store e Google Play, que disponibiliza ao CLIENTE os serviços de internet banking oferecidos por meio da PARCERIA.
+                </div>
+
+                <div class="definition">
+                    <strong>SERVIÇOS</strong>
+                    São os serviços oferecidos pela INSTITUIÇÃO DE PAGAMENTO ao Cliente, quais sejam: a gestão da conta de pagamento pré-paga; e, a gestão das operações de pagamento, movimentações e transferência de valores, bem como a liquidação de boletos, impostos e contas de consumo.
+                </div>
+            </section>
+
+            <section id="adesao" class="section">
+                <h2 class="section-title">2. DA ADESÃO</h2>
+                
+                <p>Este instrumento regula as condições de uso dos serviços da <strong>PLATAFORMA</strong> sendo um contrato entre os <strong>USUÁRIOS</strong> e a DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA. A utilização dos serviços oferecidos através da <strong>PLATAFORMA</strong> indica expressamente que você concorda com todos os termos e condições contidos neste instrumento e com as disposições legais aplicáveis à espécie.</p>
+
+                <div class="important">
+                    <strong>IMPORTANTE:</strong> VOCÊ ENTENDE E CONCORDA QUE A DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA CONSIDERARÁ O USO DOS SERVIÇOS DISPOSTOS COMO ACEITAÇÃO DESTES TERMOS E TODAS AS DEMAIS DISPOSIÇÕES LEGAIS PERTINENTES À ESPÉCIE.
+                </div>
+
+                <div class="highlight">
+                    <strong>AUTORIZAÇÃO DE DADOS:</strong> AO ACEITAR OS TERMOS DO PRESENTE INSTRUMENTO, O USUÁRIO AUTORIZA EXPRESSAMENTE O TRATAMENTO DE SEUS DADOS, A FIM DE GARANTIR A MANUTENÇÃO E O BOM DESEMPENHO DAS FUNCIONALIDADES DA PLATAFORMA.
+                </div>
+
+                <div class="warning">
+                    <strong>NÃO CONCORDÂNCIA:</strong> Caso você <strong>NÃO CONCORDE</strong> com as disposições previstas neste instrumento, <strong>NÃO</strong> acesse, visualize, baixe ou utilize de qualquer forma nenhuma página, conteúdo, informação ou serviço da DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA.
+                </div>
+
+                <p>Os presentes termos estão disponíveis para leitura, a qualquer momento, na <strong>PLATAFORMA</strong> por meio da URL <a href="https://termodeuso.deltapag.com.br" target="_blank" style="color: #ff6b35;">termodeuso.deltapag.com.br</a></p>
+            </section>
+
+            <section id="quem-somos" class="section">
+                <h2 class="section-title">3. QUEM SOMOS E O QUE FAZEMOS</h2>
+                
+                <p>A DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA é uma correspondente de instituições financeiras, consultoria em investimentos financeiros e serviços de intermediação de empréstimos.</p>
+                
+                <p>A DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA, por meio da parceria que mantém com a <strong>INSTITUIÇÃO DE PAGAMENTO</strong>, oferece um aplicativo mobile compatível com sistemas iOS e Android, disponível nas lojas App Store e Google Play, o qual disponibiliza ao <strong>CLIENTE</strong> os serviços de internet banking.</p>
+            </section>
+
+            <section id="protecao-dados" class="section">
+                <h2 class="section-title">4. DA PROTEÇÃO DE DADOS E PRIVACIDADE</h2>
+                
+                <div class="subsection">
+                    <h3>Uso de Imagens</h3>
+                    <div class="highlight">
+                        <p><strong>Imagens:</strong> As imagens (fotos e selfies) podem ser utilizadas para validação de identidade, prevenção a fraudes e personalização do perfil do usuário. O acesso a essas imagens será solicitado de forma clara e com seu consentimento.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Uso da Câmera e Tecnologias de Segurança</h3>
+                    <div class="highlight">
+                        <p><strong>Câmera:</strong> Utilizamos tecnologias como reconhecimento facial e sistemas antifraude, em conformidade com a LGPD (Lei Geral de Proteção de Dados), garantindo a proteção e o uso responsável das suas informações.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Compartilhamento de Dados</h3>
+                    <div class="important">
+                        <p><strong>Compartilhamento de Dados:</strong> Não compartilhamos dados com terceiros, exceto quando necessário para a prestação de serviços ou por obrigação legal.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Acesso a Dados do Dispositivo</h3>
+                    <div class="warning">
+                        <p><strong>Permissões do Dispositivo:</strong> Para o funcionamento adequado da PLATAFORMA, poderemos solicitar acesso à galeria de imagens, upload de dados, informações cadastrais e à lista de contatos do dispositivo móvel do CLIENTE. Todas essas permissões serão solicitadas de forma clara e transparente, respeitando sua privacidade e os princípios da LGPD.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Conformidade com a LGPD</h3>
+                    <p>Todas as práticas de coleta, tratamento e armazenamento de dados pessoais seguem rigorosamente as diretrizes da Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018), garantindo:</p>
+                    <ul>
+                        <li>Transparência no tratamento de dados</li>
+                        <li>Finalidade específica para cada coleta</li>
+                        <li>Minimização de dados coletados</li>
+                        <li>Segurança e confidencialidade</li>
+                        <li>Direitos do titular dos dados</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="propriedade-intelectual" class="section">
+                <h2 class="section-title">5. DA PROPRIEDADE INTELECTUAL</h2>
+                
+                <p>Todo o material, patentes, marcas, registros, nomes, privilégios, criações, imagens, códigos de programação e todos os direitos conexos e relacionados com a <strong>PLATAFORMA</strong> desenvolvidos pela <strong>INSTITUIÇÃO DE PAGAMENTO</strong>, ou pelas empresas que compõem o seu grupo econômico, e licenciados à DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA, são e permanecerão de única e exclusiva propriedade da <strong>INSTITUIÇÃO DE PAGAMENTO</strong> ou das empresas que compõem o seu grupo econômico.</p>
+
+                <p>O <strong>CLIENTE</strong> concorda em não praticar ato ou fato que, por qualquer modo, prejudique os direitos previstos nesta cláusula e tampouco reivindicar qualquer direito ou privilégio sobre os mesmos.</p>
+            </section>
+
+            <section id="isencao-responsabilidade" class="section">
+                <h2 class="section-title">6. DAS HIPÓTESES DE ISENÇÃO DE RESPONSABILIDADE</h2>
+                
+                <p>O <strong>CLIENTE</strong> toma ciência de que a DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA e a <strong>INSTITUIÇÃO DE PAGAMENTO</strong> não serão responsáveis:</p>
+
+                <ol>
+                    <li>Por toda e qualquer indisponibilidade, erro ou falha apresentados na <strong>PLATAFORMA</strong>, bem como por qualquer defraudação de utilidade que o <strong>CLIENTE</strong> possa ter atribuído à <strong>PLATAFORMA</strong> pela dificuldade de acesso;</li>
+                    
+                    <li>Por erros ou eventuais inconsistências na transmissão de dados, pela qualidade ou disponibilidade da conexão de Internet, que impeçam a adequada utilização da <strong>PLATAFORMA</strong>;</li>
+                    
+                    <li>Pela presença de vírus ou demais elementos nocivos na <strong>PLATAFORMA</strong>, capazes de causar alterações em seus sistemas informáticos (software e hardware) ou em documentos eletrônicos armazenados em seus sistemas informáticos;</li>
+                    
+                    <li>Pelos danos e prejuízos de toda natureza decorrentes do conhecimento que terceiros não autorizados possam ter de quaisquer dados fornecidos pela <strong>PLATAFORMA</strong>, em decorrência de falha exclusivamente relacionada ao <strong>CLIENTE</strong> ou a terceiros;</li>
+                    
+                    <li>Por quaisquer dados e/ou informações inverídicas, desatualizadas ou inexatas, fornecidas pelo <strong>CLIENTE</strong> quando da realização de seu cadastro na PLATAFORMA.</li>
+                </ol>
+            </section>
+
+            <section id="sancoes" class="section">
+                <h2 class="section-title">7. DAS SANÇÕES</h2>
+                
+                <p>Sem prejuízo de outras medidas cabíveis, a DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA e/ou a <strong>INSTITUIÇÃO DE PAGAMENTO</strong> poderão, a seu exclusivo critério, suspender, temporária ou definitivamente, o acesso do <strong>CLIENTE</strong> à Plataforma se:</p>
+
+                <ol>
+                    <li>O <strong>CLIENTE</strong> descumprir quaisquer das disposições constantes nestes Termos e/ou nas disposições dos contratos e documentos que regulam o seu relacionamento com a DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA;</li>
+                    
+                    <li>A DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA e/ou a <strong>INSTITUIÇÃO DE PAGAMENTO</strong> possuírem suspeitas de que o <strong>CLIENTE</strong> pratica ou praticou atos fraudulentos ou ilegais;</li>
+                    
+                    <li>Caso não seja possível a verificação da identidade do <strong>CLIENTE</strong>, ou se os dados e informações fornecidos por ele estiverem incorretos.</li>
+                </ol>
+            </section>
+
+            <section id="disposicoes-gerais" class="section">
+                <h2 class="section-title">8. DAS DISPOSIÇÕES GERAIS</h2>
+                
+                <div class="subsection">
+                    <h3>Modificações dos Termos</h3>
+                    <p>A DELTAPAG SOLUÇÕES DE PAGAMENTO LTDA poderá, a qualquer tempo e/ou a pedido da <strong>INSTITUIÇÃO DE PAGAMENTO</strong>, incluir, excluir ou alterar estes Termos de Uso, a seu exclusivo critério, sendo que, quaisquer alterações realizadas deverão ser informadas por meio de comunicado na Plataforma com prazo de antecedência de 05 (cinco) dias, ou, mediante notificação, por e-mail, no mesmo prazo de antecedência ao <strong>CLIENTE</strong>.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Veracidade das Informações</h3>
+                    <p>O <strong>CLIENTE</strong> declara que todas as informações fornecidas no momento da abertura de sua Conta de Pagamento e de sua ativação são verídicas, especialmente aquelas concernentes aos países onde detém residência fiscal, além do Brasil.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Legislação Aplicável</h3>
+                    <p>Estes Termos de Uso serão regidos e interpretados de acordo com as Leis da República Federativa do Brasil, ficando eleito o foro da Comarca de Campinas/SP, como competente para dirimir quaisquer questões oriundas destes Termos, com exclusão de qualquer outro, por mais privilegiado que seja.</p>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 DeltaPag Soluções de Pagamento LTDA. Todos os direitos reservados.</p>
+            <p>Documento disponível em: <a href="https://termodeuso.deltapag.com.br" style="color: #ff6b35;">termodeuso.deltapag.com.br</a></p>
+        </footer>
+    </div>
+</body>
+</html> 

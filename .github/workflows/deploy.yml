@@ -1,0 +1,102 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+    - name: Deploy CloudFormation stack
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        aws cloudformation deploy \
+          --template-file infrastructure/cloudformation.yml \
+          --stack-name deltapag-termos-stack \
+          --parameter-overrides \
+            BucketName=${{ vars.S3_BUCKET_NAME || 'deltapag-termos-site' }} \
+            Environment=${{ vars.ENVIRONMENT || 'prod' }} \
+          --capabilities CAPABILITY_IAM \
+          --no-fail-on-empty-changeset
+
+    - name: Get S3 bucket name from CloudFormation
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        BUCKET_NAME=$(aws cloudformation describe-stacks \
+          --stack-name deltapag-termos-stack \
+          --query 'Stacks[0].Outputs[?OutputKey==`BucketName`].OutputValue' \
+          --output text)
+        echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+
+    - name: Sync files to S3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        aws s3 sync . s3://${{ env.BUCKET_NAME }} \
+          --exclude ".git/*" \
+          --exclude ".github/*" \
+          --exclude "infrastructure/*" \
+          --exclude "*.md" \
+          --exclude ".gitignore" \
+          --delete \
+          --cache-control "public, max-age=31536000" \
+          --exclude "*.html" \
+          --exclude "*.css" \
+          --exclude "*.js"
+        
+        # Upload HTML, CSS, and JS files with shorter cache
+        aws s3 sync . s3://${{ env.BUCKET_NAME }} \
+          --include "*.html" \
+          --include "*.css" \
+          --include "*.js" \
+          --cache-control "public, max-age=86400"
+
+    - name: Invalidate CloudFront distribution
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        DISTRIBUTION_ID=$(aws cloudformation describe-stacks \
+          --stack-name deltapag-termos-stack \
+          --query 'Stacks[0].Outputs[?OutputKey==`DistributionId`].OutputValue' \
+          --output text)
+        
+        if [ "$DISTRIBUTION_ID" != "None" ] && [ ! -z "$DISTRIBUTION_ID" ]; then
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"
+        fi
+
+    - name: Get website URL
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        WEBSITE_URL=$(aws cloudformation describe-stacks \
+          --stack-name deltapag-termos-stack \
+          --query 'Stacks[0].Outputs[?OutputKey==`WebsiteURL`].OutputValue' \
+          --output text)
+        echo "🚀 Website deployed successfully!"
+        echo "📖 Website URL: $WEBSITE_URL"
+        echo "website-url=$WEBSITE_URL" >> $GITHUB_OUTPUT
+
+    - name: Comment PR with preview URL
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🔍 **Preview**: This PR can be previewed once merged to main branch.\n\n📋 **Files changed**: HTML, CSS, and asset files will be updated on the static site.'
+          }) 
