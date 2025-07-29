@@ -82,8 +82,8 @@ The CloudFormation template creates:
 
 ### Core Infrastructure
 
-- **S3 Bucket**: Static website hosting with public read access
-- **CloudFront Distribution**: Global CDN with HTTPS (default certificate)
+- **S3 Bucket**: Static storage in `sa-east-1` region (Brazilian compliance)
+- **CloudFront Distribution**: Global CDN with HTTPS (deployed from `us-east-1`)
 
 ### Security & Monitoring
 
@@ -106,14 +106,17 @@ The CloudFormation template creates:
 |-----------|-------------|---------|---------|
 | `BucketName` | S3 bucket name prefix | `deltapag-termos-site` | Any valid S3 name |
 | `Environment` | Environment name | `prod` | `dev`, `staging`, `prod` |
+| `S3BucketName` | Full S3 bucket name | Auto-generated | Generated from prefix |
+| `S3Region` | S3 bucket region | `sa-east-1` | AWS region code |
 
 ### GitHub Actions Variables
 
 Set these in your repository's Variables section:
 
-- `AWS_REGION`: AWS region for deployment
-- `S3_BUCKET_NAME`: Bucket name prefix
-- `ENVIRONMENT`: Environment identifier
+- `S3_BUCKET_NAME`: Bucket name prefix (optional)
+- `ENVIRONMENT`: Environment identifier (optional)
+
+**Note**: CloudFront resources deployed to `us-east-1` (required), S3 bucket created in `sa-east-1` (company compliance).
 
 ## 📝 Content Management
 

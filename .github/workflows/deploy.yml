@@ -19,7 +19,32 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+        aws-region: us-east-1
+
+    - name: Create S3 bucket in sa-east-1
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        BUCKET_NAME="${{ vars.S3_BUCKET_NAME || 'deltapag-termos-site' }}-${{ vars.ENVIRONMENT || 'prod' }}-$(aws sts get-caller-identity --query Account --output text)"
+        echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+        
+        # Create bucket if it doesn't exist
+        if ! aws s3api head-bucket --bucket "$BUCKET_NAME" --region sa-east-1 2>/dev/null; then
+          aws s3api create-bucket \
+            --bucket "$BUCKET_NAME" \
+            --region sa-east-1 \
+            --create-bucket-configuration LocationConstraint=sa-east-1
+          
+          # Block public access
+          aws s3api put-public-access-block \
+            --bucket "$BUCKET_NAME" \
+            --public-access-block-configuration \
+            "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+          
+          # Add tags
+          aws s3api put-bucket-tagging \
+            --bucket "$BUCKET_NAME" \
+            --tagging 'TagSet=[{Key=Environment,Value=${{ vars.ENVIRONMENT || 'prod' }}},{Key=Project,Value=DeltaPag-Terms}]'
+        fi
 
     - name: Deploy CloudFormation stack
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -30,17 +55,46 @@ jobs:
           --parameter-overrides \
             BucketName=${{ vars.S3_BUCKET_NAME || 'deltapag-termos-site' }} \
             Environment=${{ vars.ENVIRONMENT || 'prod' }} \
+            S3BucketName=${{ env.BUCKET_NAME }} \
+            S3Region=sa-east-1 \
           --capabilities CAPABILITY_IAM \
+          --region us-east-1 \
           --no-fail-on-empty-changeset
 
-    - name: Get S3 bucket name from CloudFormation
+    - name: Configure S3 bucket policy for CloudFront
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       run: |
-        BUCKET_NAME=$(aws cloudformation describe-stacks \
+        # Get CloudFront OAI ID
+        OAI_ID=$(aws cloudformation describe-stack-resources \
           --stack-name deltapag-termos-stack \
-          --query 'Stacks[0].Outputs[?OutputKey==`BucketName`].OutputValue' \
+          --region us-east-1 \
+          --logical-resource-id CloudFrontOAI \
+          --query 'StackResources[0].PhysicalResourceId' \
           --output text)
-        echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+        
+        # Create bucket policy
+        cat > bucket-policy.json << EOF
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "AllowCloudFrontAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity $OAI_ID"
+              },
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::${{ env.BUCKET_NAME }}/*"
+            }
+          ]
+        }
+        EOF
+        
+        # Apply bucket policy
+        aws s3api put-bucket-policy \
+          --bucket "${{ env.BUCKET_NAME }}" \
+          --policy file://bucket-policy.json \
+          --region sa-east-1
 
     - name: Sync files to S3
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -51,7 +105,9 @@ jobs:
           --exclude "infrastructure/*" \
           --exclude "*.md" \
           --exclude ".gitignore" \
+          --exclude "bucket-policy.json" \
           --delete \
+          --region sa-east-1 \
           --cache-control "public, max-age=31536000" \
           --exclude "*.html" \
           --exclude "*.css" \
@@ -62,6 +118,7 @@ jobs:
           --include "*.html" \
           --include "*.css" \
           --include "*.js" \
+          --region sa-east-1 \
           --cache-control "public, max-age=86400"
 
     - name: Invalidate CloudFront distribution
@@ -69,6 +126,7 @@ jobs:
       run: |
         DISTRIBUTION_ID=$(aws cloudformation describe-stacks \
           --stack-name deltapag-termos-stack \
+          --region us-east-1 \
           --query 'Stacks[0].Outputs[?OutputKey==`DistributionId`].OutputValue' \
           --output text)
         
@@ -83,6 +141,7 @@ jobs:
       run: |
         WEBSITE_URL=$(aws cloudformation describe-stacks \
           --stack-name deltapag-termos-stack \
+          --region us-east-1 \
           --query 'Stacks[0].Outputs[?OutputKey==`WebsiteURL`].OutputValue' \
           --output text)
         echo "🚀 Website deployed successfully!"

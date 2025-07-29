@@ -17,51 +17,17 @@ Parameters:
       - dev
       - staging
       - prod
+      
+  S3BucketName:
+    Type: String
+    Description: Existing S3 bucket name (created separately in sa-east-1)
+    
+  S3Region:
+    Type: String
+    Description: AWS region where S3 bucket exists
+    Default: sa-east-1
 
 Resources:
-  # S3 Bucket for static website hosting
-  WebsiteBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub '${BucketName}-${Environment}-${AWS::AccountId}'
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      CorsConfiguration:
-        CorsRules:
-          - AllowedHeaders: ['*']
-            AllowedMethods: [GET, HEAD]
-            AllowedOrigins: ['*']
-            MaxAge: 3600
-      LifecycleConfiguration:
-        Rules:
-          - Id: DeleteIncompleteMultipartUploads
-            Status: Enabled
-            AbortIncompleteMultipartUpload:
-              DaysAfterInitiation: 7
-      Tags:
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Project
-          Value: DeltaPag-Terms
-        - Key: Purpose
-          Value: Static Website Hosting
-
-  # S3 Bucket Policy for CloudFront access only
-  WebsiteBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref WebsiteBucket
-      PolicyDocument:
-        Statement:
-          - Sid: AllowCloudFrontAccess
-            Effect: Allow
-            Principal:
-              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}'
-            Action: 's3:GetObject'
-            Resource: !Sub '${WebsiteBucket}/*'
 
   # CloudFront Origin Access Identity
   CloudFrontOAI:
@@ -81,7 +47,7 @@ Resources:
         DefaultRootObject: index.html
         Origins:
           - Id: S3Origin
-            DomainName: !GetAtt WebsiteBucket.RegionalDomainName
+            DomainName: !Sub '${S3BucketName}.s3.${S3Region}.amazonaws.com'
             S3OriginConfig:
               OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOAI}'
         DefaultCacheBehavior:
@@ -145,7 +111,7 @@ Resources:
 Outputs:
   BucketName:
     Description: Name of the S3 bucket
-    Value: !Ref WebsiteBucket
+    Value: !Ref S3BucketName
     Export:
       Name: !Sub '${AWS::StackName}-BucketName'
 
